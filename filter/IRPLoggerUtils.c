@@ -170,7 +170,7 @@ NTSTATUS GetProcessImageName(WCHAR *process_image_name)
 
 	// If we get here, the buffer IS going to be big enough for us, so 
 	// let's allocate some storage.
-	buffer = ExAllocatePoolWithTag(PagedPool, returned_length, 'ipgD');
+	buffer = ExAllocatePool2(POOL_FLAG_PAGED, returned_length, 'ipgD');
 	if (NULL == buffer) 		
 		return STATUS_INSUFFICIENT_RESOURCES;
 
