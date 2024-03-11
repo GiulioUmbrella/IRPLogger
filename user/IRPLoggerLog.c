@@ -734,7 +734,7 @@ Return Value:
 	// Print file name
     fprintf(file, "\t%S", name);
     
-    fprintf(file, "\td",record_data->test)
+    fprintf(file, "\t%f", record_data->test);
 
     fprintf(file, "\n");
     
