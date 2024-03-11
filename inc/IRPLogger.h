@@ -86,6 +86,7 @@ typedef struct _RECORD_DATA {
     ULONG ecp_count;
     ULONG known_ecp_mask;
 	double entropy;
+    double test;
 } RECORD_DATA, *PRECORD_DATA;
 
 //  What information we actually log.

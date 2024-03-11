@@ -614,6 +614,8 @@ Return Value:
 	record_data->Arg6.QuadPart = data->Iopb->Parameters.Others.Argument6.QuadPart;
 
 	KeQuerySystemTime(&record_data->originating_time);
+
+	record_data->test = 42;
 }
 
 VOID log_post_operation_data(

@@ -691,7 +691,7 @@ Return Value:
 
     // Is this an Irp or a FastIo?
     if (!did_file_header) {
-		fprintf(file, "Operation\tTimestamp\tPID\tProcess\tMajor Operation type\tMinor Operation type\tBuffersize\tEntropy\tFilename\n");
+		fprintf(file, "Operation\tTimestamp\tPID\tProcess\tMajor Operation type\tMinor Operation type\tBuffersize\tEntropy\tFilename\tTest\n");
 		did_file_header = TRUE;
     }
 
@@ -733,5 +733,9 @@ Return Value:
 
 	// Print file name
     fprintf(file, "\t%S", name);
+    
+    fprintf(file, "\td",record_data->test)
+
     fprintf(file, "\n");
+    
 }
