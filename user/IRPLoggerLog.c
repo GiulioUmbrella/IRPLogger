@@ -695,6 +695,13 @@ Return Value:
 		did_file_header = TRUE;
     }
 
+
+    if(record_data->callback_major_id == IRP_MJ_SET_INFORMATION) 
+    {
+        fprintf(file, "%d\t", record_data->x.SetInformation.FileInformationClass);
+    }
+
+
 	// Is this an Irp or a FastIo?
 	if (record_data->flags & FLT_CALLBACK_DATA_IRP_OPERATION)
 		fprintf(file, "IRP");
