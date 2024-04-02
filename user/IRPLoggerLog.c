@@ -698,9 +698,18 @@ Return Value:
 
     if(record_data->callback_major_id == IRP_MJ_SET_INFORMATION) 
     {
-        fprintf(file, "%d\t", record_data->x.SetInformation.FileInformationClass);
+        fprintf(file, "InfoClass: %X\t", record_data->x.FileRename.FileInformationClass);
+
+        if(record_data->x.FileRename.FileInformationClass == 10)
+            fprintf(file, "FileNameLength: %X\t", record_data->x.FileRename.FileNameLength );
+            //fprintf(file, "strlen: %zd", wcslen(record_data->x.FileRename.NewName));
+            //wchar_t bau[] = L"%ls";
+            fwprintf(file, L"%ls", record_data->x.FileRename.NewName);
+           
     }
 
+    
+    
 
 	// Is this an Irp or a FastIo?
 	if (record_data->flags & FLT_CALLBACK_DATA_IRP_OPERATION)
