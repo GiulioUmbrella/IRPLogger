@@ -63,7 +63,8 @@ typedef _Return_type_success_(return >= 0) LONG NTSTATUS;
 
 typedef union _X {
     
-    struct {
+    struct 
+    {
         LARGE_INTEGER ByteOffset;
     } Write;
     struct 
@@ -73,7 +74,18 @@ typedef union _X {
     struct 
     {
         int FileInformationClass;
-    } SetInformation;
+        ULONG FileNameLength;
+        wchar_t NewName[64];
+    } FileRename;
+    //struct 
+    //{
+    //    int FileInformationClass;
+    //    union {
+    //        struct {
+    //            ULONG FileNameLength;
+    //        } FileRename ;
+    //    } Info;
+    //} SetInformation;
     
 } X, *PX;
 
