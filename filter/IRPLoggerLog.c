@@ -593,10 +593,19 @@ Return Value:
 		dev_obj = NULL;
 
 
-	if (data->Iopb->MajorFunction == IRP_MJ_SET_INFORMATION )
-	{
-		record_data->x.SetInformation.FileInformationClass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
-	}
+	//if(data->Iopb->MajorFunction == IRP_MJ_SET_INFORMATION)
+	//{
+	//	record_data->x.FileRename.FileInformationClass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
+
+		//if (fileinfoclass == FileRenameInformation)
+		//{
+		//	PFILE_RENAME_INFORMATION renameInfo;
+		//	renameInfo = (PFILE_RENAME_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+
+		//	record_data->x.FileRename.FileNameLength = renameInfo->FileNameLength;
+		//}
+	//}
+
 
 
 	//  Save the information we want
@@ -643,6 +652,30 @@ Return Value:
 	PRECORD_DATA record_data = &record_list->log_record.data;
 	PVOID data_buffer = NULL;
 	ULONG data_len = 0;
+
+	if (data->Iopb->MajorFunction == IRP_MJ_SET_INFORMATION)
+	{
+		record_data->x.FileRename.FileInformationClass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
+
+		// Rename case
+		if (data->Iopb->Parameters.SetFileInformation.FileInformationClass == FileRenameInformation)
+		{
+			PFILE_RENAME_INFORMATION renameInfo;
+			renameInfo = (PFILE_RENAME_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+
+			record_data->x.FileRename.FileNameLength = renameInfo->FileNameLength;
+			
+			PWSTR pt = (PWSTR)renameInfo->FileName;
+
+			wcscpy(record_data->x.FileRename.NewName,pt);
+			
+			
+		}	
+
+
+	}
+
+
 
 	record_data->status = data->IoStatus.Status;
 	record_data->information = data->IoStatus.Information;
@@ -694,6 +727,8 @@ Return Value:
 			}
 		}
 	}
+
+
 
 	KeQuerySystemTime(&record_data->completion_time);
 }
