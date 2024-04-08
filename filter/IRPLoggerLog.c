@@ -592,6 +592,23 @@ Return Value:
 	else
 		dev_obj = NULL;
 
+	if (data->Iopb->MajorFunction == IRP_MJ_SET_INFORMATION)
+	{
+		int fileinformationclass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
+		record_data->x.SetInformation.InfoTag = fileinformationclass;
+
+		if (fileinformationclass == FileDispositionInformation)
+		{
+			PFILE_DISPOSITION_INFORMATION ptr;
+			ptr = (PFILE_DISPOSITION_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+			record_data->x.SetInformation.FileInfo.Delete = ptr->DeleteFile;
+		}
+
+	}
+
+
+
+
 	//  Save the information we want
 	record_data->callback_major_id = data->Iopb->MajorFunction;
 	record_data->callback_minor_id = data->Iopb->MinorFunction;
