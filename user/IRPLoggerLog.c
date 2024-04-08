@@ -695,6 +695,8 @@ Return Value:
 		did_file_header = TRUE;
     }
 
+
+
 	// Is this an Irp or a FastIo?
 	if (record_data->flags & FLT_CALLBACK_DATA_IRP_OPERATION)
 		fprintf(file, "IRP");
@@ -717,13 +719,43 @@ Return Value:
 	fprintf(file, "\t%ld", (DWORD) record_data->process_id);
 
 	// Print process name (from process id)
-	fprintf(file, "\t%S", record_data->process_name);
+	if(wcslen(record_data->process_name) != 0 )
+        fprintf(file, "\t%S", record_data->process_name);
+    else
+        fprintf(file, "\t%s", "NA");
 	//print_process_name_from_pid(record_data->process_id, file);
+
+    
 
     translate_irp_code(record_data->callback_major_id,
 		record_data->callback_minor_id,
 		file
 	);
+
+    if (record_data->callback_major_id == IRP_MJ_SET_INFORMATION) {
+        fprintf(file, "%d\t", record_data->x.SetInformation.InfoTag);
+        
+        if (record_data->x.SetInformation.InfoTag == 19 ) 
+        {
+            fprintf(file, "%lld\t", record_data->x.SetInformation.Fileinfo.FileAllocation.AllocSize.QuadPart);
+        }
+        if (record_data->x.SetInformation.InfoTag == 20)
+        {
+            fprintf(file, "%lld\t", record_data->x.SetInformation.Fileinfo.EndOfFile.EndOfFile.QuadPart);
+        }
+    
+    
+    }
+    else {
+        fprintf(file, "%s\t", "NA");
+    }
+
+    if (record_data->callback_major_id == IRP_MJ_WRITE) {
+        fprintf(file, "PreSize: %lld\t", record_data->x.Write.PreSize.QuadPart);
+        fprintf(file, "PostSize: %lld\t", record_data->x.Write.PostSize.QuadPart);
+    }
+
+
 
 	// Print buffersize
 	fprintf(file, "\t%ld", (DWORD) record_data->data_len);

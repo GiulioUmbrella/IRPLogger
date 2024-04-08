@@ -592,6 +592,22 @@ Return Value:
 	else
 		dev_obj = NULL;
 
+	
+	if (data->Iopb->MajorFunction == IRP_MJ_SET_INFORMATION) 
+	{
+		int fileinformationclass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
+		record_data->x.SetInformation.InfoTag = fileinformationclass;		
+		
+	}
+
+	if(data->Iopb->MajorFunction == IRP_MJ_WRITE) 
+	{
+		LARGE_INTEGER filesize;
+		FsRtlGetFileSize(data->Iopb->TargetFileObject, &filesize);
+		record_data->x.Write.PreSize = filesize;
+	}
+	
+	
 	//  Save the information we want
 	record_data->callback_major_id = data->Iopb->MajorFunction;
 	record_data->callback_minor_id = data->Iopb->MinorFunction;
@@ -640,7 +656,37 @@ Return Value:
 	record_data->status = data->IoStatus.Status;
 	record_data->information = data->IoStatus.Information;
 
+
+	if (data->Iopb->MajorFunction == IRP_MJ_SET_INFORMATION)
+	{
+		int FileInformationClass;
+		FileInformationClass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
+
+		record_data->x.SetInformation.InfoTag = FileInformationClass;
+		
+		if(FileInformationClass == FileAllocationInformation)
+		{
+			PFILE_ALLOCATION_INFORMATION ptr;
+			ptr = (PFILE_ALLOCATION_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+			record_data->x.SetInformation.Fileinfo.FileAllocation.AllocSize = ptr->AllocationSize;
+		}
+		if( FileInformationClass == FileEndOfFileInformation)
+		{
+			PFILE_END_OF_FILE_INFORMATION ptr;
+			ptr = (PFILE_END_OF_FILE_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+			record_data->x.SetInformation.Fileinfo.EndOfFile.EndOfFile = ptr->EndOfFile;
+		}
+	}
+
+
+
+
 	if (record_data->callback_major_id == IRP_MJ_WRITE) {
+		
+		LARGE_INTEGER filesize;
+		FsRtlGetFileSize(data->Iopb->TargetFileObject,&filesize);
+		record_data->x.Write.PostSize = filesize;
+
 		data_len = data->Iopb->Parameters.Write.Length;
 
 		if (data_len > 0) {
