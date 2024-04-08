@@ -671,13 +671,13 @@ Return Value:
 		{
 			PFILE_ALLOCATION_INFORMATION ptr;
 			ptr = (PFILE_ALLOCATION_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
-			record_data->x.SetInformation.Fileinfo.FileAllocation.AllocSize = ptr->AllocationSize;
+			record_data->x.SetInformation.Fileinfo.AllocSize = ptr->AllocationSize;
 		}
 		if( FileInformationClass == FileEndOfFileInformation)
 		{
 			PFILE_END_OF_FILE_INFORMATION ptr;
 			ptr = (PFILE_END_OF_FILE_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
-			record_data->x.SetInformation.Fileinfo.EndOfFile.EndOfFile = ptr->EndOfFile;
+			record_data->x.SetInformation.Fileinfo.EndOfFile = ptr->EndOfFile;
 		}
 	}
 

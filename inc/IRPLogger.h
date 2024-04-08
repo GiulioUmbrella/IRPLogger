@@ -69,12 +69,8 @@ typedef union _X{
     struct {
         int InfoTag;
         union {
-            struct {
-                LARGE_INTEGER AllocSize;
-            } FileAllocation;
-            struct {
-                LARGE_INTEGER EndOfFile;
-            } EndOfFile;
+            LARGE_INTEGER AllocSize;
+            LARGE_INTEGER EndOfFile;
         } Fileinfo;
     } SetInformation;
 

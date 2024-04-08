@@ -737,11 +737,11 @@ Return Value:
         
         if (record_data->x.SetInformation.InfoTag == 19 ) 
         {
-            fprintf(file, "%lld\t", record_data->x.SetInformation.Fileinfo.FileAllocation.AllocSize.QuadPart);
+            fprintf(file, "AllocSize %lld\t", record_data->x.SetInformation.Fileinfo.AllocSize.QuadPart);
         }
         if (record_data->x.SetInformation.InfoTag == 20)
         {
-            fprintf(file, "%lld\t", record_data->x.SetInformation.Fileinfo.EndOfFile.EndOfFile.QuadPart);
+            fprintf(file, "EndOfFile %lld\t", record_data->x.SetInformation.Fileinfo.EndOfFile.QuadPart);
         }
     
     
