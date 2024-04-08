@@ -63,7 +63,7 @@ typedef union _X{
     struct {
         LARGE_INTEGER PreSize;
         LARGE_INTEGER PostSize;
-
+        LARGE_INTEGER Offset;
     } Write;
     
     struct {

@@ -753,12 +753,13 @@ Return Value:
     if (record_data->callback_major_id == IRP_MJ_WRITE) {
         fprintf(file, "PreSize: %lld\t", record_data->x.Write.PreSize.QuadPart);
         fprintf(file, "PostSize: %lld\t", record_data->x.Write.PostSize.QuadPart);
+        fprintf(file, "Offset: %lld\t", record_data->x.Write.Offset.QuadPart);
     }
 
 
 
 	// Print buffersize
-	fprintf(file, "\t%ld", (DWORD) record_data->data_len);
+	fprintf(file, "Buffersize: \t%ld", (DWORD) record_data->data_len);
 
 	// Print file entropy
 	fprintf(file, "\t%1.12lf", record_data->entropy);

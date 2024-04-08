@@ -605,6 +605,9 @@ Return Value:
 		LARGE_INTEGER filesize;
 		FsRtlGetFileSize(data->Iopb->TargetFileObject, &filesize);
 		record_data->x.Write.PreSize = filesize;
+		
+		record_data->x.Write.Offset = data->Iopb->Parameters.Write.ByteOffset;
+
 	}
 	
 	
