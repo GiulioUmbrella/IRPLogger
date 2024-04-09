@@ -81,7 +81,7 @@ typedef union _X {
             LARGE_INTEGER AllocSize;
             LARGE_INTEGER EndOfFile;
             BOOLEAN Delete;
-        };
+        } InfoClass;
     } SetInformation;
 } X, *PX;
 
