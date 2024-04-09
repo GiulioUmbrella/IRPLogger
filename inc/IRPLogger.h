@@ -59,6 +59,35 @@ typedef _Return_type_success_(return >= 0) LONG NTSTATUS;
 #define RECORD_TYPE_FLAG_OUT_OF_MEMORY           0x10000000
 #define RECORD_TYPE_FLAG_MASK                    0xffff0000
 
+typedef union _X {
+    
+    struct {
+        ULONG Options;
+    } Create;
+    
+    struct {
+        LARGE_INTEGER PreSize;
+        LARGE_INTEGER PostSize;
+        LARGE_INTEGER Offset;
+    } Write;
+
+    struct {
+        int InfoTag;
+        union {
+            struct {
+                ULONG FileNameLength;
+                WCHAR NewName[64];
+            } FileRename;
+            LARGE_INTEGER AllocSize;
+            LARGE_INTEGER EndOfFile;
+            BOOLEAN Delete;
+        };
+    } SetInformation;
+} X, *PX;
+
+
+
+
 //  The fixed data received for RECORD_TYPE_NORMAL
 typedef struct _RECORD_DATA {
     LARGE_INTEGER originating_time;
