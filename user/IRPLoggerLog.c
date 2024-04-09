@@ -725,6 +725,16 @@ Return Value:
 		file
 	);
 
+    
+    if (record_data->callback_major_id == IRP_MJ_WRITE)
+    {
+        fprintf(file, "\t PreSize %lld", record_data->x.Write.PreSize.QuadPart);
+        fprintf(file, "\t PostSize %lld", record_data->x.Write.PostSize.QuadPart);
+        fprintf(file, "\t Offset %lld", record_data->x.Write.Offset.QuadPart);
+
+    }
+    
+    
     if (record_data->callback_major_id == IRP_MJ_SET_INFORMATION)
     {
         fprintf(file, "\t InfoTag %d", record_data->x.SetInformation.InfoTag);
@@ -734,6 +744,24 @@ Return Value:
             fprintf(file, "\t DeleteFlag %d", record_data->x.SetInformation.InfoClass.Delete);
         }
 
+        if (record_data->x.SetInformation.InfoTag == 10)
+        {
+            fprintf(file, "\t FilenameLangth %d", record_data->x.SetInformation.InfoClass.FileRename.FileNameLength);
+            fwprintf(file, L"\t NewFileName %ls", record_data->x.SetInformation.InfoClass.FileRename.NewName);
+
+        }
+
+
+        if (record_data->x.SetInformation.InfoTag == 19)
+        {
+            fprintf(file, "\t Allocsize %lld", record_data->x.SetInformation.InfoClass.AllocSize.QuadPart);
+
+        }
+        
+        if (record_data->x.SetInformation.InfoTag == 20)
+        {
+            fprintf(file, "\t EndOfFile %lld", record_data->x.SetInformation.InfoClass.EndOfFile.QuadPart);
+        }
 
     }
 
