@@ -594,7 +594,8 @@ Return Value:
 
 	if (data->Iopb->MajorFunction == IRP_MJ_SET_INFORMATION)
 	{
-		int fileinformationclass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
+		int fileinformationclass;
+		fileinformationclass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
 		record_data->x.SetInformation.InfoTag = fileinformationclass;
 	
 	
@@ -604,7 +605,6 @@ Return Value:
 			ptr = (PFILE_DISPOSITION_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
 			record_data->x.SetInformation.InfoClass.Delete = ptr->DeleteFile;
 		}
-	
 	
 	}
 
@@ -671,6 +671,28 @@ Return Value:
 
 	record_data->status = data->IoStatus.Status;
 	record_data->information = data->IoStatus.Information;
+
+
+	if (data->Iopb->MajorFunction == IRP_MJ_SET_INFORMATION)
+	{
+		int fileinformationclass;
+		fileinformationclass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
+
+		if (fileinformationclass == FileAllocationInformation)
+		{
+			PFILE_ALLOCATION_INFORMATION ptr;
+			ptr = (PFILE_ALLOCATION_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+			record_data->x.SetInformation.InfoClass.AllocSize = ptr->AllocationSize;
+		}
+
+		if (fileinformationclass == FileEndOfFileInformation)
+		{
+			PFILE_END_OF_FILE_INFORMATION ptr;
+			ptr = (PFILE_END_OF_FILE_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+			record_data->x.SetInformation.InfoClass.EndOfFile = ptr->EndOfFile;
+		}
+	}
+
 
 	if (record_data->callback_major_id == IRP_MJ_WRITE) {
 		
