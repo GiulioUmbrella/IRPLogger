@@ -725,6 +725,11 @@ Return Value:
 		file
 	);
 
+    if (record_data->callback_major_id == IRP_MJ_DIRECTORY_CONTROL && record_data->callback_minor_id == IRP_MN_QUERY_DIRECTORY)
+    {
+        fprintf(file, "\t FileInfoClass %d", record_data->x.QueryDirectory.FileInformationClass);
+    }
+
 	// Print buffersize
 	fprintf(file, "\t%ld", (DWORD) record_data->data_len);
 

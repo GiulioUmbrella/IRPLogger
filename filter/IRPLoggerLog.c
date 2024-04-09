@@ -592,6 +592,12 @@ Return Value:
 	else
 		dev_obj = NULL;
 
+
+	if (data->Iopb->MajorFunction == IRP_MJ_DIRECTORY_CONTROL && data->Iopb->MinorFunction == IRP_MN_QUERY_DIRECTORY)
+	{
+		record_data->x.QueryDirectory.FileInformationClass = data->Iopb->Parameters.DirectoryControl.QueryDirectory.FileInformationClass;
+	}
+
 	//  Save the information we want
 	record_data->callback_major_id = data->Iopb->MajorFunction;
 	record_data->callback_minor_id = data->Iopb->MinorFunction;
