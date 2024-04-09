@@ -596,6 +596,21 @@ Return Value:
 	{
 		int fileinformationclass = data->Iopb->Parameters.SetFileInformation.FileInformationClass;
 		record_data->x.SetInformation.InfoTag = fileinformationclass;
+	
+	
+		if (fileinformationclass == FileDispositionInformation)
+		{
+			PFILE_DISPOSITION_INFORMATION ptr;
+			ptr = (PFILE_DISPOSITION_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+			record_data->x.SetInformation.InfoClass.Delete = ptr->DeleteFile;
+		}
+	
+	
+	}
+
+	if (data->Iopb->MajorFunction == IRP_MJ_CREATE)
+	{
+		record_data->x.Create.Options = data->Iopb->Parameters.Create.Options;
 	}
 
 
