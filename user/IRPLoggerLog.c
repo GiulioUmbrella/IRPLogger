@@ -725,6 +725,25 @@ Return Value:
 		file
 	);
 
+    if (record_data->callback_major_id == IRP_MJ_SET_INFORMATION)
+    {
+        fprintf(file, "\t InfoTag %d", record_data->x.SetInformation.InfoTag);
+
+        if (record_data->x.SetInformation.InfoTag == 13)
+        {
+            fprintf(file, "\t DeleteFlag %d", record_data->x.SetInformation.InfoClass.Delete);
+        }
+
+
+    }
+
+    if (record_data->callback_major_id == IRP_MJ_CREATE)
+    {
+        fprintf(file, "\t Create Option %d", record_data->x.Create.Options);
+    }
+
+
+
 	// Print buffersize
 	fprintf(file, "\t%ld", (DWORD) record_data->data_len);
 
