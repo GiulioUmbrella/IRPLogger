@@ -692,7 +692,7 @@ Return Value:
 			record_data->x.SetInformation.InfoClass.EndOfFile = eof_ptr->EndOfFile;
 		}
 
-		if (fileinformationclass == FileNameInformation)
+		if (fileinformationclass == FileRenameInformation)
 		{
 			PFILE_RENAME_INFORMATION rename_ptr;
 			rename_ptr = (PFILE_RENAME_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
