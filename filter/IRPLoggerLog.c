@@ -606,7 +606,10 @@ Return Value:
 
 	}
 
-
+	if (data->Iopb->MajorFunction == IRP_MJ_CREATE)
+	{
+		record_data->x.Create.Options = data->Iopb->Parameters.Create.Options;
+	}
 
 
 	//  Save the information we want

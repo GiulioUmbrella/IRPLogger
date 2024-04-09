@@ -727,13 +727,19 @@ Return Value:
 
     if (record_data->callback_major_id == IRP_MJ_SET_INFORMATION) 
     {
-        fprintf(file, "\t%d", record_data->x.SetInformation.InfoTag);
+        fprintf(file, "\t InfoTag %d", record_data->x.SetInformation.InfoTag);
         if (record_data->x.SetInformation.InfoTag == 13)
         {
             fprintf(file, "\tDeleteFlag: %d", record_data->x.SetInformation.FileInfo.Delete);
         }
 
     }
+
+    if (record_data->callback_major_id == IRP_MJ_CREATE) 
+    {
+        fprintf(file, "\t Create Options%d", record_data->x.Create.Options);
+    }
+
 
 	// Print buffersize
 	fprintf(file, "\t%ld", (DWORD) record_data->data_len);
