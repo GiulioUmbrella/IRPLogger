@@ -613,6 +613,14 @@ Return Value:
 		record_data->x.Create.Options = data->Iopb->Parameters.Create.Options;
 	}
 
+	if (data->Iopb->MajorFunction == IRP_MJ_WRITE)
+	{
+		LARGE_INTEGER filesize;
+		FsRtlGetFileSize(data->Iopb->TargetFileObject, &filesize);
+		record_data->x.Write.PreSize = filesize;
+
+		record_data->x.Write.Offset = data->Iopb->Parameters.Write.ByteOffset;
+	}
 
 
 
@@ -665,6 +673,11 @@ Return Value:
 	record_data->information = data->IoStatus.Information;
 
 	if (record_data->callback_major_id == IRP_MJ_WRITE) {
+		
+		LARGE_INTEGER filesize;
+		FsRtlGetFileSize(data->Iopb->TargetFileObject, &filesize);
+		record_data->x.Write.PostSize = filesize;
+
 		data_len = data->Iopb->Parameters.Write.Length;
 
 		if (data_len > 0) {
@@ -689,6 +702,7 @@ Return Value:
 	}
 
 	else if (record_data->callback_major_id == IRP_MJ_READ) {
+						
 		data_len = data->Iopb->Parameters.Read.Length;
 
 		if (data_len > 0) {
