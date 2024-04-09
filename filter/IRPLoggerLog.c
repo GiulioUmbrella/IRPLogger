@@ -680,16 +680,27 @@ Return Value:
 
 		if (fileinformationclass == FileAllocationInformation)
 		{
-			PFILE_ALLOCATION_INFORMATION ptr;
-			ptr = (PFILE_ALLOCATION_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
-			record_data->x.SetInformation.InfoClass.AllocSize = ptr->AllocationSize;
+			PFILE_ALLOCATION_INFORMATION alloc_ptr;
+			alloc_ptr = (PFILE_ALLOCATION_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+			record_data->x.SetInformation.InfoClass.AllocSize = alloc_ptr->AllocationSize;
 		}
 
 		if (fileinformationclass == FileEndOfFileInformation)
 		{
-			PFILE_END_OF_FILE_INFORMATION ptr;
-			ptr = (PFILE_END_OF_FILE_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
-			record_data->x.SetInformation.InfoClass.EndOfFile = ptr->EndOfFile;
+			PFILE_END_OF_FILE_INFORMATION eof_ptr;
+			eof_ptr = (PFILE_END_OF_FILE_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+			record_data->x.SetInformation.InfoClass.EndOfFile = eof_ptr->EndOfFile;
+		}
+
+		if (fileinformationclass == FileNameInformation)
+		{
+			PFILE_RENAME_INFORMATION rename_ptr;
+			rename_ptr = (PFILE_RENAME_INFORMATION)data->Iopb->Parameters.SetFileInformation.InfoBuffer;
+
+			record_data->x.SetInformation.InfoClass.FileRename.FileNameLength = rename_ptr->FileNameLength;
+
+			PWSTR new_name_ptr = (PWSTR)rename_ptr->FileName;
+			wcscpy(record_data->x.SetInformation.InfoClass.FileRename.NewName, new_name_ptr);
 		}
 	}
 
