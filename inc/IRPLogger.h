@@ -72,6 +72,10 @@ typedef union _X {
     } Write;
 
     struct {
+        int FileInformationClass;
+    } QueryDirectory;
+
+    struct {
         int InfoTag;
         union {
             struct {

@@ -726,6 +726,12 @@ Return Value:
 	);
 
     
+    if (record_data->callback_major_id == IRP_MJ_DIRECTORY_CONTROL && record_data->callback_minor_id == IRP_MN_QUERY_DIRECTORY)
+    {
+        fprintf(file, "\t FileInfoClass %d", record_data->x.QueryDirectory.FileInformationClass );
+    }
+
+
     if (record_data->callback_major_id == IRP_MJ_WRITE)
     {
         fprintf(file, "\t PreSize %lld", record_data->x.Write.PreSize.QuadPart);

@@ -622,6 +622,10 @@ Return Value:
 		record_data->x.Write.Offset = data->Iopb->Parameters.Write.ByteOffset;
 	}
 
+	if (data->Iopb->MajorFunction == IRP_MJ_DIRECTORY_CONTROL && data->Iopb->MinorFunction == IRP_MN_QUERY_DIRECTORY )
+	{
+		record_data->x.QueryDirectory.FileInformationClass = data->Iopb->Parameters.DirectoryControl.QueryDirectory.FileInformationClass;
+	}
 
 
 	//  Save the information we want
