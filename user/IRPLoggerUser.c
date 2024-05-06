@@ -83,6 +83,8 @@ Routine Description:
     HANDLE thread = NULL;
     IRPLOG_CONTEXT context;
 
+	puts("Starting");
+
 	//  Initialize error logging 
 	error_init("irplogger.error.log", DEBUG, 10);
 
