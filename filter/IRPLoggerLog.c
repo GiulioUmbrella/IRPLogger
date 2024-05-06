@@ -700,7 +700,23 @@ Return Value:
 			record_data->x.SetInformation.InfoClass.FileRename.FileNameLength = rename_ptr->FileNameLength;
 
 			PWSTR new_name_ptr = (PWSTR)rename_ptr->FileName;
-			wcscpy(record_data->x.SetInformation.InfoClass.FileRename.NewName, new_name_ptr);
+			
+			// Remember, an extra byte is due to pay the string
+			WCHAR new_str_buffer[64];  
+			
+			// Copy up to 63 bytes from new name string
+			// Case 1 new name shorter than 63 - the remaining bytes are set to zero
+			// Case 2 new name longer than 63 byte from 0 to 62 are filled, byte 63 is NOT
+			wcsncpy(new_str_buffer, new_name_ptr, 63);
+
+			// Corner case for Case 2:  Set the LAST byte - INDEX 63 - to NULL. In Case 2 byte 63 is NOT filled automatically 
+			// NOTE the termination MUST be a wide null byte, USE the L prefix
+			new_str_buffer[63] = L'\0';
+
+			// Copy ALL the bytes, so it considers also the null byte
+			// TODO: set the dimension to constant and import it
+			wcsncpy(record_data->x.SetInformation.InfoClass.FileRename.NewName, new_str_buffer,64);
+
 		}
 	}
 
