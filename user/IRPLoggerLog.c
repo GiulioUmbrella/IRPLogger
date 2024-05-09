@@ -740,6 +740,11 @@ Return Value:
 
     }
     
+    if (record_data->callback_major_id == IRP_MJ_READ)
+    {
+        fprintf(file, "\t Offset %lld", record_data->x.Read.Offset.QuadPart);
+    }
+
     
     if (record_data->callback_major_id == IRP_MJ_SET_INFORMATION)
     {

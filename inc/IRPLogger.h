@@ -72,6 +72,10 @@ typedef union _X {
     } Write;
 
     struct {
+        LARGE_INTEGER Offset;
+    } Read;
+
+    struct {
         int FileInformationClass;
     } QueryDirectory;
 
