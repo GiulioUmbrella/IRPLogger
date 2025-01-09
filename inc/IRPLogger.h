@@ -48,7 +48,7 @@ typedef ULONG_PTR FILE_ID;
 typedef _Return_type_success_(return >= 0) LONG NTSTATUS;
 
 //  The maximum size of a record that can be passed from the filter
-#define RECORD_SIZE     1024 + MY_MAX_PATH
+#define RECORD_SIZE     1512 + MY_MAX_PATH
 
 //  This defines the type of record buffer this is along with certain flags.
 #define RECORD_TYPE_NORMAL                       0x00000000
@@ -84,7 +84,7 @@ typedef union _X {
         union {
             struct {
                 ULONG FileNameLength;
-                WCHAR NewName[64];
+                WCHAR NewName[256];
             } FileRename;
             LARGE_INTEGER AllocSize;
             LARGE_INTEGER EndOfFile;
